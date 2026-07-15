@@ -37,55 +37,48 @@ const photos = [
   },
   {
     id: 6,
-    title: "Urban Shadow",
-    category: "Portraits",
-    src: "images/Picsart_24-08-19_10-22-45-925.jpg",
-    sizeClass: "large"
-  },
-  {
-    id: 7,
     title: "Dreamy Overlay",
     category: "Creative",
     src: "images/Picsart_24-08-19_19-01-46-603.jpg",
     sizeClass: "normal"
   },
   {
-    id: 8,
+    id: 7,
     title: "Sunlit Portrait",
     category: "Portraits",
     src: "images/Picsart_24-08-19_19-04-31-440.jpg",
     sizeClass: "normal"
   },
   {
-    id: 9,
+    id: 8,
     title: "Midnight Blue",
     category: "Creative",
     src: "images/Picsart_24-08-19_19-20-37-794.jpg",
     sizeClass: "wide"
   },
   {
-    id: 10,
+    id: 9,
     title: "Crimson Hue",
     category: "Creative",
     src: "images/Picsart_24-08-19_19-31-10-183.jpg",
     sizeClass: "normal"
   },
   {
-    id: 11,
+    id: 10,
     title: "Ethereal Light",
     category: "Creative",
     src: "images/Picsart_26-04-30_13-45-27-417.jpg",
     sizeClass: "normal"
   },
   {
-    id: 12,
+    id: 11,
     title: "Contrast Play",
     category: "Portraits",
     src: "images/new2.jpg",
     sizeClass: "normal"
   },
   {
-    id: 13,
+    id: 12,
     title: "Scooty Ride",
     category: "Portraits",
     src: "images/media__1784133569099.jpg",
@@ -124,7 +117,7 @@ function renderGallery(items) {
     itemEl.setAttribute("data-category", photo.category);
     
     itemEl.innerHTML = `
-      <img src="${photo.src}?v=1.1" alt="${photo.title}" class="photo-img" loading="lazy">
+      <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
       <div class="photo-overlay">
         <h3 class="photo-title">${photo.title}</h3>
         <span class="photo-category">${photo.category}</span>
@@ -249,7 +242,7 @@ function updateLightboxContent() {
   lightboxImg.style.transform = "scale(0.95)";
   
   setTimeout(() => {
-    lightboxImg.src = `${photo.src}?v=1.1`;
+    lightboxImg.src = photo.src;
     lightboxImg.alt = photo.title;
     lightboxTitle.textContent = photo.title;
     lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
