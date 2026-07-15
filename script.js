@@ -30,10 +30,10 @@ const photos = [
   },
   {
     id: 5,
-    title: "Cinematic Glow",
-    category: "Creative",
-    src: "images/Picsart_24-08-19_10-13-01-552.jpg",
-    sizeClass: "tall"
+    title: "Urban Shadow",
+    category: "Portraits",
+    src: "images/Picsart_24-08-19_10-22-45-925.jpg",
+    sizeClass: "large"
   },
   {
     id: 6,
