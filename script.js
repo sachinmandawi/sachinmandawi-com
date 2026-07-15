@@ -83,6 +83,13 @@ const photos = [
     category: "Portraits",
     src: "images/new2.jpg",
     sizeClass: "normal"
+  },
+  {
+    id: 13,
+    title: "Scooty Ride",
+    category: "Portraits",
+    src: "images/media__1784133569099.jpg",
+    sizeClass: "tall"
   }
 ];
 
