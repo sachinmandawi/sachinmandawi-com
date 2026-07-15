@@ -124,7 +124,7 @@ function renderGallery(items) {
     itemEl.setAttribute("data-category", photo.category);
     
     itemEl.innerHTML = `
-      <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
+      <img src="${photo.src}?v=1.1" alt="${photo.title}" class="photo-img" loading="lazy">
       <div class="photo-overlay">
         <h3 class="photo-title">${photo.title}</h3>
         <span class="photo-category">${photo.category}</span>
@@ -249,7 +249,7 @@ function updateLightboxContent() {
   lightboxImg.style.transform = "scale(0.95)";
   
   setTimeout(() => {
-    lightboxImg.src = photo.src;
+    lightboxImg.src = `${photo.src}?v=1.1`;
     lightboxImg.alt = photo.title;
     lightboxTitle.textContent = photo.title;
     lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
