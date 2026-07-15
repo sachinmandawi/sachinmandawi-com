@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO & WhatsApp Preview Meta Tags -->
+  <title>Sachin Mandavi | Photography Showcase</title>
+  <meta name="description" content="Explore the creative photography and digital creations portfolio of Sachin Mandavi. Captured with passion and edited to perfection.">
+  <meta name="author" content="Sachin Mandavi">
+  <meta property="og:title" content="Sachin Mandavi | Photography Showcase">
+  <meta property="og:description" content="Explore my creative photography and digital art portfolio.">
+  <meta property="og:image" content="images/Picsart_24-08-19_10-22-45-925.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Link CSS stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Profile Hero Card -->
+    <header class="profile-card">
+      <div class="avatar-wrapper">
+        <div class="avatar-border"></div>
+        <!-- Using one of the collection pictures as a default avatar -->
+        <img src="images/profile_pic.jpg" alt="Sachin Mandavi" class="avatar-image">
+      </div>
+      
+      <h1 class="profile-name">Sachin Mandavi</h1>
+
+
+
+
+
+    </header>
+
+
+
+    <!-- Photos Grid Section -->
+    <main class="gallery-section">
+      <div id="galleryGrid" class="gallery-grid">
+        <!-- Javascript will dynamically inject the photo-items here -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">
+        &copy; 2026 Designed for <span class="footer-accent">Sachin Mandavi</span>. All rights reserved.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Lightbox Modal (For fullscreen photo viewing) -->
+  <div id="lightbox" class="lightbox">
+    <!-- Close Lightbox Button -->
+    <button id="btnClose" class="lightbox-btn btn-close" aria-label="Close Lightbox">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+    
+    <!-- Previous Photo Button -->
+    <button id="btnPrev" class="lightbox-btn btn-prev" aria-label="Previous Photo">
+      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+
+    <div class="lightbox-content">
+      <img id="lightboxImg" class="lightbox-img" src="" alt="Fullscreen Photo">
+    </div>
+
+    <!-- Next Photo Button -->
+    <button id="btnNext" class="lightbox-btn btn-next" aria-label="Next Photo">
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </button>
+
+    <!-- Lightbox details overlay -->
+    <div class="lightbox-info">
+      <h2 id="lightboxTitle" class="lightbox-title">Photo Title</h2>
+      <span id="lightboxCounter" class="lightbox-counter">1 / 14</span>
+    </div>
+  </div>
+
+  <!-- Link Javascript file -->
+  <script src="script.js"></script>
+</body>
+</html>
