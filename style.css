@@ -633,8 +633,13 @@ a,
   width: 100%;
   height: auto;
   display: block;
-  transition: transform var(--transition-slow);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform var(--transition-slow);
   background: #0f1015;
+}
+
+.photo-img.loaded {
+  opacity: 1;
 }
 
 .photo-item:hover .photo-img {
@@ -882,7 +887,18 @@ a,
 
   .btn-prev,
   .btn-next {
-    display: none;
+    width: 38px;
+    height: 38px;
+    background: rgba(12, 13, 18, 0.72);
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  .btn-prev {
+    left: 0.65rem;
+  }
+
+  .btn-next {
+    right: 0.65rem;
   }
 
   .lightbox-btn.btn-close {

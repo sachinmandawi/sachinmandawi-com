@@ -4,84 +4,108 @@ const photos = [
     id: 1,
     title: "Golden Hour Mood",
     category: "Portraits",
-    src: "images/IMG_20240817_194908_798.jpg",
+    src: "images/IMG_20240817_194908_798.jpg?v=5",
+    width: 1800,
+    height: 1800,
     sizeClass: "tall"
   },
   {
     id: 2,
     title: "Vibrant Cyan",
     category: "Creative",
-    src: "images/Picsart_24-08-19_09-52-39-872.jpg",
+    src: "images/Picsart_24-08-19_09-52-39-872.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "normal"
   },
   {
     id: 3,
     title: "Neon Reflections",
     category: "Creative",
-    src: "images/Picsart_24-08-19_09-58-24-028.jpg",
+    src: "images/Picsart_24-08-19_09-58-24-028.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "wide"
   },
   {
     id: 4,
     title: "Warm Silhouette",
     category: "Portraits",
-    src: "images/Picsart_24-08-19_10-04-30-992.jpg",
+    src: "images/Picsart_24-08-19_10-04-30-992.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "normal"
   },
   {
     id: 5,
     title: "Urban Shadow",
     category: "Portraits",
-    src: "images/Picsart_24-08-19_10-22-45-925.jpg",
+    src: "images/Picsart_24-08-19_10-22-45-925.jpg?v=5",
+    width: 1200,
+    height: 1800,
     sizeClass: "large"
   },
   {
     id: 6,
     title: "Dreamy Overlay",
     category: "Creative",
-    src: "images/Picsart_24-08-19_19-01-46-603.jpg",
+    src: "images/Picsart_24-08-19_19-01-46-603.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "normal"
   },
   {
     id: 7,
     title: "Sunlit Portrait",
     category: "Portraits",
-    src: "images/Picsart_24-08-19_19-04-31-440.jpg",
+    src: "images/Picsart_24-08-19_19-04-31-440.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "normal"
   },
   {
     id: 8,
     title: "Midnight Blue",
     category: "Creative",
-    src: "images/Picsart_24-08-19_19-20-37-794.jpg",
+    src: "images/Picsart_24-08-19_19-20-37-794.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "wide"
   },
   {
     id: 9,
     title: "Crimson Hue",
     category: "Creative",
-    src: "images/Picsart_24-08-19_19-31-10-183.jpg",
+    src: "images/Picsart_24-08-19_19-31-10-183.jpg?v=5",
+    width: 1200,
+    height: 1800,
     sizeClass: "normal"
   },
   {
     id: 10,
     title: "Ethereal Light",
     category: "Creative",
-    src: "images/Picsart_26-04-30_13-45-27-417.jpg",
+    src: "images/Picsart_26-04-30_13-45-27-417.jpg?v=5",
+    width: 1800,
+    height: 1800,
     sizeClass: "normal"
   },
   {
     id: 11,
     title: "Contrast Play",
     category: "Portraits",
-    src: "images/new2.jpg",
+    src: "images/new2.jpg?v=5",
+    width: 1800,
+    height: 1200,
     sizeClass: "normal"
   },
   {
     id: 12,
     title: "Scooty Ride",
     category: "Portraits",
-    src: "images/media__1784133569099.jpg",
+    src: "images/media__1784133569099.jpg?v=5",
+    width: 682,
+    height: 1024,
     sizeClass: "tall"
   }
 ];
@@ -371,9 +395,20 @@ function renderGallery(items) {
     itemEl.className = `photo-item ${photo.sizeClass}`;
     itemEl.setAttribute("data-category", photo.category);
     
-    itemEl.innerHTML = `
-      <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
-    `;
+    const imgEl = document.createElement("img");
+    imgEl.src = photo.src;
+    imgEl.alt = photo.title;
+    imgEl.width = photo.width;
+    imgEl.height = photo.height;
+    imgEl.className = "photo-img";
+    imgEl.loading = index < 4 ? "eager" : "lazy";
+    imgEl.decoding = "async";
+
+    const markLoaded = () => imgEl.classList.add("loaded");
+    imgEl.onload = markLoaded;
+    if (imgEl.complete) markLoaded();
+
+    itemEl.appendChild(imgEl);
     
     // Open lightbox on click
     itemEl.addEventListener("click", () => {
@@ -509,16 +544,20 @@ function updateLightboxContent() {
   lightboxImg.style.transform = "scale(0.95)";
   
   lightboxSwapTimeout = setTimeout(() => {
-    lightboxImg.onload = () => {
+    const showLightboxImg = () => {
       lightboxImg.style.opacity = "1";
       lightboxImg.style.transform = "scale(1)";
     };
+    lightboxImg.onload = showLightboxImg;
     lightboxImg.src = photo.src;
     lightboxImg.alt = photo.title;
+    if (lightboxImg.complete && lightboxImg.naturalWidth > 0) {
+      showLightboxImg();
+    }
     lightboxTitle.textContent = photo.title;
     lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
     preloadAdjacentPhotos(currentPhotoIndex);
-  }, 150);
+  }, 140);
 }
 
 // Initialize on DOM Load
