@@ -361,10 +361,6 @@ function renderGallery(items) {
     
     itemEl.innerHTML = `
       <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
-      <div class="photo-overlay">
-        <h3 class="photo-title">${photo.title}</h3>
-        <span class="photo-category">${photo.category}</span>
-      </div>
     `;
     
     // Open lightbox on click
