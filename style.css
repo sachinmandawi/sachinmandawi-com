@@ -631,6 +631,12 @@ body {
   transform: scale(1.04);
 }
 
+.photo-overlay,
+.photo-title,
+.photo-category {
+  display: none !important;
+}
+
 /* Lightbox Modal */
 .lightbox {
   position: fixed;
