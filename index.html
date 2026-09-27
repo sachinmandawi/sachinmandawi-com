@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- SEO & WhatsApp Preview Meta Tags -->
-  <title>Sachin Mandavi | Photography Showcase</title>
-  <meta name="description" content="Explore the creative photography and digital creations portfolio of Sachin Mandavi. Captured with passion and edited to perfection.">
-  <meta name="author" content="Sachin Mandavi">
-  <meta property="og:title" content="Sachin Mandavi | Photography Showcase">
+  <title>Sachin Mandawi | Photography Showcase</title>
+  <meta name="description" content="Explore the creative photography and digital creations portfolio of Sachin Mandawi. Captured with passion and edited to perfection.">
+  <meta name="author" content="Sachin Mandawi">
+  <meta property="og:title" content="Sachin Mandawi | Photography Showcase">
   <meta property="og:description" content="Explore my creative photography and digital art portfolio.">
-  <meta property="og:image" content="images/Picsart_24-08-19_10-22-45-925.jpg">
+  <meta property="og:image" content="images/profile_pic.jpg">
   <meta property="og:type" content="website">
 
   <!-- Link CSS stylesheet -->
@@ -25,30 +25,127 @@
       <div class="avatar-wrapper">
         <div class="avatar-border"></div>
         <!-- Using one of the collection pictures as a default avatar -->
-        <img src="images/profile_pic.jpg" alt="Sachin Mandavi" class="avatar-image">
+        <img src="images/profile_pic.jpg" alt="Sachin Mandawi" class="avatar-image">
       </div>
       
-      <h1 class="profile-name">Sachin Mandavi</h1>
+      <h1 class="profile-name">Sachin Mandawi</h1>
 
-
-
-
-
+      <div class="social-links">
+        <a href="https://www.instagram.com/sachinmandawi" target="_blank" rel="noopener noreferrer" class="btn-social btn-instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://github.com/sachinmandawi" target="_blank" rel="noopener noreferrer" class="btn-social btn-github">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
     </header>
 
 
 
     <!-- Photos Grid Section -->
     <main class="gallery-section">
-      <div id="galleryGrid" class="gallery-grid">
-        <!-- Javascript will dynamically inject the photo-items here -->
+      <!-- Locked State: Unlock Photos Gate -->
+      <div id="vaultGate" class="vault-gate">
+        <button id="btnShowVault" class="btn-unlock-trigger">
+          <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Unlock Photos</span>
+        </button>
+
+        <div id="vaultFormCard" class="vault-form-card hidden">
+          <button id="btnCloseVault" class="vault-close-btn" aria-label="Close Vault">✕</button>
+
+          <div class="vault-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+
+          <h2 class="vault-title">How Well Do You Know Me?</h2>
+          <p class="vault-subtitle">Enter my birth date to unlock photos for 5 mins</p>
+
+          <!-- Modern 3-Slot Interactive Birthday Display -->
+          <div class="dob-modern-slots">
+            <!-- Day Slot -->
+            <div class="dob-slot">
+              <span class="slot-label">DAY</span>
+              <div class="slot-stepper">
+                <button type="button" class="step-btn" data-action="day-down" aria-label="Previous Day">−</button>
+                <input type="text" id="dobDayInput" class="slot-input" inputmode="numeric" maxlength="2" placeholder="" value="">
+                <button type="button" class="step-btn" data-action="day-up" aria-label="Next Day">+</button>
+              </div>
+            </div>
+
+            <!-- Month Slot (Toggles sleek custom month grid) -->
+            <div class="dob-slot">
+              <span class="slot-label">MONTH</span>
+              <button type="button" id="btnMonthToggle" class="slot-month-btn" aria-label="Select Month">
+                <span id="selectedMonthText"></span>
+                <svg class="chevron-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+            </div>
+
+            <!-- Year Slot -->
+            <div class="dob-slot">
+              <span class="slot-label">YEAR</span>
+              <div class="slot-stepper">
+                <button type="button" class="step-btn" data-action="year-down" aria-label="Previous Year">−</button>
+                <input type="text" id="dobYearInput" class="slot-input" inputmode="numeric" maxlength="4" placeholder="" value="">
+                <button type="button" class="step-btn" data-action="year-up" aria-label="Next Year">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Month Pill Grid (Collapsed by default, opens only on click) -->
+          <div id="monthPickerGrid" class="month-picker-grid hidden">
+            <button type="button" class="month-pill" data-month="1">Jan</button>
+            <button type="button" class="month-pill" data-month="2">Feb</button>
+            <button type="button" class="month-pill" data-month="3">Mar</button>
+            <button type="button" class="month-pill" data-month="4">Apr</button>
+            <button type="button" class="month-pill" data-month="5">May</button>
+            <button type="button" class="month-pill" data-month="6">Jun</button>
+            <button type="button" class="month-pill" data-month="7">Jul</button>
+            <button type="button" class="month-pill" data-month="8">Aug</button>
+            <button type="button" class="month-pill" data-month="9">Sep</button>
+            <button type="button" class="month-pill" data-month="10">Oct</button>
+            <button type="button" class="month-pill" data-month="11">Nov</button>
+            <button type="button" class="month-pill" data-month="12">Dec</button>
+          </div>
+
+          <p id="vaultError" class="vault-error hidden">Incorrect date. Please try again.</p>
+
+          <button id="btnConfirmUnlock" class="btn-confirm-unlock">
+            <span>Unlock Gallery</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Unlocked State: 5-Minute Live Countdown Banner -->
+      <div id="unlockTimerBar" class="unlock-timer-bar hidden">
+        <div class="timer-info">
+          <span class="timer-text">Auto-locks in <strong id="timerCountdown">05:00</strong></span>
+        </div>
+        <button id="btnLockNow" class="btn-lock-now">Lock Now</button>
+      </div>
+
+      <div id="galleryGrid" class="gallery-grid hidden">
+        <!-- Javascript will dynamically inject the photo-items here when unlocked -->
       </div>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
       <p class="footer-text">
-        &copy; 2026 Designed for <span class="footer-accent">Sachin Mandavi</span>. All rights reserved.
+        &copy; 2026 Designed for <span class="footer-accent">Sachin Mandawi</span>. All rights reserved.
       </p>
     </footer>
 
@@ -78,7 +175,7 @@
     <!-- Lightbox details overlay -->
     <div class="lightbox-info">
       <h2 id="lightboxTitle" class="lightbox-title">Photo Title</h2>
-      <span id="lightboxCounter" class="lightbox-counter">1 / 14</span>
+      <span id="lightboxCounter" class="lightbox-counter">1 / 12</span>
     </div>
   </div>
 

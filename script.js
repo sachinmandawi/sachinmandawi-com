@@ -89,9 +89,28 @@ const photos = [
 // Active State Variables
 let currentPhotoIndex = 0;
 let filteredPhotos = [...photos];
+let countdownInterval = null;
+const UNLOCK_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+const STORAGE_KEY = "sachin_portfolio_unlock_expiry";
 
 // DOM Elements
 const galleryGrid = document.getElementById("galleryGrid");
+const vaultGate = document.getElementById("vaultGate");
+const btnShowVault = document.getElementById("btnShowVault");
+const btnCloseVault = document.getElementById("btnCloseVault");
+const vaultFormCard = document.getElementById("vaultFormCard");
+const dobDayInput = document.getElementById("dobDayInput");
+const dobYearInput = document.getElementById("dobYearInput");
+const btnMonthToggle = document.getElementById("btnMonthToggle");
+const selectedMonthText = document.getElementById("selectedMonthText");
+const monthPickerGrid = document.getElementById("monthPickerGrid");
+const monthPills = document.querySelectorAll(".month-pill");
+const stepBtns = document.querySelectorAll(".step-btn");
+const vaultError = document.getElementById("vaultError");
+const btnConfirmUnlock = document.getElementById("btnConfirmUnlock");
+const unlockTimerBar = document.getElementById("unlockTimerBar");
+const timerCountdown = document.getElementById("timerCountdown");
+const btnLockNow = document.getElementById("btnLockNow");
 
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
@@ -101,10 +120,234 @@ const btnClose = document.getElementById("btnClose");
 const btnPrev = document.getElementById("btnPrev");
 const btnNext = document.getElementById("btnNext");
 
-// Initialize Gallery
+let selectedMonth = 0; // 1 = Jan ... 5 = May ... 12 = Dec
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// Initialize Gallery & Vault Gate
 function initGallery() {
-  renderGallery(photos);
+  setupVaultEvents();
   setupLightbox();
+  checkExistingUnlockSession();
+}
+
+function resetVaultInputs() {
+  dobDayInput.value = "";
+  dobYearInput.value = "";
+  selectedMonth = 0;
+  selectedMonthText.textContent = "";
+  monthPills.forEach((p) => p.classList.remove("selected"));
+  monthPickerGrid.classList.add("hidden");
+  btnMonthToggle.classList.remove("active");
+  vaultError.classList.add("hidden");
+}
+
+function setupVaultEvents() {
+  // Clicking "Unlock Photos" hides the trigger button and reveals the smart vault card
+  btnShowVault.addEventListener("click", () => {
+    resetVaultInputs();
+    btnShowVault.classList.add("hidden");
+    vaultFormCard.classList.remove("hidden");
+  });
+
+  // Clicking "✕" closes the vault card, clears inputs, and restores the "Unlock Photos" button
+  btnCloseVault.addEventListener("click", () => {
+    resetVaultInputs();
+    vaultFormCard.classList.add("hidden");
+    btnShowVault.classList.remove("hidden");
+  });
+
+  // Month toggle button toggles the custom 12-month pill grid
+  btnMonthToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    monthPickerGrid.classList.toggle("hidden");
+    btnMonthToggle.classList.toggle("active");
+  });
+
+  // Clicking outside the month picker grid closes it automatically
+  document.addEventListener("click", (e) => {
+    if (
+      !monthPickerGrid.classList.contains("hidden") &&
+      !monthPickerGrid.contains(e.target) &&
+      !btnMonthToggle.contains(e.target)
+    ) {
+      monthPickerGrid.classList.add("hidden");
+      btnMonthToggle.classList.remove("active");
+    }
+  });
+
+  // Escape key closes month grid first, then vault card
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !vaultFormCard.classList.contains("hidden")) {
+      if (!monthPickerGrid.classList.contains("hidden")) {
+        monthPickerGrid.classList.add("hidden");
+        btnMonthToggle.classList.remove("active");
+      } else {
+        resetVaultInputs();
+        vaultFormCard.classList.add("hidden");
+        btnShowVault.classList.remove("hidden");
+      }
+    }
+  });
+
+  // Month pill selection
+  monthPills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      selectedMonth = parseInt(pill.getAttribute("data-month"), 10);
+      selectedMonthText.textContent = MONTH_NAMES[selectedMonth - 1];
+      monthPills.forEach((p) => p.classList.remove("selected"));
+      pill.classList.add("selected");
+      // Auto-collapse month grid after selecting a month
+      monthPickerGrid.classList.add("hidden");
+      btnMonthToggle.classList.remove("active");
+      vaultError.classList.add("hidden");
+    });
+  });
+
+  // Stepper buttons (+ / - for Day and Year) with accurate first-click behavior
+  stepBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const action = btn.getAttribute("data-action");
+      vaultError.classList.add("hidden");
+
+      if (action === "day-up" || action === "day-down") {
+        const raw = dobDayInput.value.trim();
+        let cur;
+        if (raw === "") {
+          cur = action === "day-up" ? 1 : 31;
+        } else {
+          cur = parseInt(raw, 10) || 1;
+          cur = action === "day-up" ? (cur >= 31 ? 1 : cur + 1) : (cur <= 1 ? 31 : cur - 1);
+        }
+        dobDayInput.value = String(cur).padStart(2, "0");
+      } else if (action === "year-up" || action === "year-down") {
+        const raw = dobYearInput.value.trim();
+        let cur;
+        if (raw === "") {
+          cur = 2000;
+        } else {
+          cur = parseInt(raw, 10) || 2000;
+          cur = action === "year-up" ? Math.min(2026, cur + 1) : Math.max(1980, cur - 1);
+        }
+        dobYearInput.value = String(cur);
+      }
+    });
+  });
+
+  // Numeric input listeners
+  dobDayInput.addEventListener("focus", () => {
+    monthPickerGrid.classList.add("hidden");
+    btnMonthToggle.classList.remove("active");
+  });
+
+  dobYearInput.addEventListener("focus", () => {
+    monthPickerGrid.classList.add("hidden");
+    btnMonthToggle.classList.remove("active");
+  });
+
+  dobDayInput.addEventListener("input", () => {
+    dobDayInput.value = dobDayInput.value.replace(/\D/g, "").slice(0, 2);
+    vaultError.classList.add("hidden");
+  });
+
+  dobDayInput.addEventListener("blur", () => {
+    if (dobDayInput.value !== "") {
+      let d = parseInt(dobDayInput.value, 10);
+      if (isNaN(d) || d < 1) d = 1;
+      if (d > 31) d = 31;
+      dobDayInput.value = String(d).padStart(2, "0");
+    }
+  });
+
+  dobYearInput.addEventListener("input", () => {
+    dobYearInput.value = dobYearInput.value.replace(/\D/g, "").slice(0, 4);
+    vaultError.classList.add("hidden");
+  });
+
+  [dobDayInput, dobYearInput].forEach((inputEl) => {
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") verifyAndUnlock();
+    });
+  });
+
+  btnConfirmUnlock.addEventListener("click", verifyAndUnlock);
+
+  btnLockNow.addEventListener("click", () => {
+    lockGallery();
+  });
+}
+
+function isBirthdayMatch() {
+  const day = parseInt(dobDayInput.value, 10);
+  const year = parseInt(dobYearInput.value, 10);
+  return day === 21 && selectedMonth === 5 && year === 2003;
+}
+
+function verifyAndUnlock() {
+  // Target Birthday: 21 May 2003
+  if (isBirthdayMatch()) {
+    vaultError.classList.add("hidden");
+    const expiryTime = Date.now() + UNLOCK_DURATION_MS;
+    localStorage.setItem(STORAGE_KEY, String(expiryTime));
+    unlockGallery(expiryTime);
+  } else {
+    vaultError.classList.remove("hidden");
+    vaultFormCard.classList.remove("shake");
+    void vaultFormCard.offsetWidth; // Trigger reflow for shake animation
+    vaultFormCard.classList.add("shake");
+  }
+}
+
+function checkExistingUnlockSession() {
+  const savedExpiry = parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10);
+  if (savedExpiry > Date.now()) {
+    unlockGallery(savedExpiry);
+  } else {
+    lockGallery();
+  }
+}
+
+function unlockGallery(expiryTime) {
+  vaultGate.classList.add("hidden");
+  unlockTimerBar.classList.remove("hidden");
+  galleryGrid.classList.remove("hidden");
+  renderGallery(photos);
+
+  if (countdownInterval) clearInterval(countdownInterval);
+  updateTimerDisplay(expiryTime);
+
+  countdownInterval = setInterval(() => {
+    updateTimerDisplay(expiryTime);
+  }, 1000);
+}
+
+function updateTimerDisplay(expiryTime) {
+  const remainingMs = expiryTime - Date.now();
+  if (remainingMs <= 0) {
+    lockGallery();
+    return;
+  }
+  const totalSeconds = Math.ceil(remainingMs / 1000);
+  const mins = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const secs = String(totalSeconds % 60).padStart(2, "0");
+  timerCountdown.textContent = `${mins}:${secs}`;
+}
+
+function lockGallery() {
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+  localStorage.removeItem(STORAGE_KEY);
+  closeLightbox();
+  lightboxImg.src = "";
+  lightboxTitle.textContent = "";
+  galleryGrid.innerHTML = "";
+  galleryGrid.classList.add("hidden");
+  unlockTimerBar.classList.add("hidden");
+  vaultFormCard.classList.add("hidden");
+  btnShowVault.classList.remove("hidden");
+  vaultGate.classList.remove("hidden");
+  resetVaultInputs();
 }
 
 // Render Photos in Grid
@@ -132,8 +375,6 @@ function renderGallery(items) {
     galleryGrid.appendChild(itemEl);
   });
 }
-
-
 
 // Lightbox Core Logic
 function setupLightbox() {
@@ -236,22 +477,21 @@ function prevPhoto() {
 // Update Lightbox Visuals
 function updateLightboxContent() {
   const photo = filteredPhotos[currentPhotoIndex];
+  if (!photo) return;
   
   // Fade out image and scale down slightly during swap
-  lightboxImg.style.opacity = 0;
+  lightboxImg.style.opacity = "0";
   lightboxImg.style.transform = "scale(0.95)";
   
   setTimeout(() => {
+    lightboxImg.onload = () => {
+      lightboxImg.style.opacity = "1";
+      lightboxImg.style.transform = "scale(1)";
+    };
     lightboxImg.src = photo.src;
     lightboxImg.alt = photo.title;
     lightboxTitle.textContent = photo.title;
     lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
-    
-    // Fade in image and scale to normal
-    lightboxImg.onload = () => {
-      lightboxImg.style.opacity = 1;
-      lightboxImg.style.transform = "scale(1)";
-    };
   }, 150);
 }
 
