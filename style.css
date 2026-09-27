@@ -51,6 +51,16 @@ body {
   line-height: 1.6;
   position: relative;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+.photo-item,
+.month-pill,
+.filter-btn {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 /* Scrollbar Customization */

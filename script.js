@@ -177,6 +177,7 @@ function setupVaultEvents() {
 
   // Escape key closes month grid first, then vault card
   document.addEventListener("keydown", (e) => {
+    if (lightbox && lightbox.classList.contains("active")) return;
     if (e.key === "Escape" && !vaultFormCard.classList.contains("hidden")) {
       if (!monthPickerGrid.classList.contains("hidden")) {
         monthPickerGrid.classList.add("hidden");
@@ -261,6 +262,17 @@ function setupVaultEvents() {
   dobYearInput.addEventListener("input", () => {
     dobYearInput.value = dobYearInput.value.replace(/\D/g, "").slice(0, 4);
     vaultError.classList.add("hidden");
+  });
+
+  dobYearInput.addEventListener("blur", () => {
+    if (dobYearInput.value.length === 4) {
+      let y = parseInt(dobYearInput.value, 10);
+      if (!isNaN(y)) {
+        if (y < 1950) y = 1950;
+        if (y > 2026) y = 2026;
+        dobYearInput.value = String(y);
+      }
+    }
   });
 
   [dobDayInput, dobYearInput].forEach((inputEl) => {
@@ -470,16 +482,33 @@ function prevPhoto() {
   updateLightboxContent();
 }
 
+let lightboxSwapTimeout = null;
+
+function preloadAdjacentPhotos(index) {
+  if (!filteredPhotos || filteredPhotos.length <= 1) return;
+  const prevIdx = (index - 1 + filteredPhotos.length) % filteredPhotos.length;
+  const nextIdx = (index + 1) % filteredPhotos.length;
+  [prevIdx, nextIdx].forEach((idx) => {
+    const img = new Image();
+    img.src = filteredPhotos[idx].src;
+  });
+}
+
 // Update Lightbox Visuals
 function updateLightboxContent() {
   const photo = filteredPhotos[currentPhotoIndex];
   if (!photo) return;
   
+  if (lightboxSwapTimeout) {
+    clearTimeout(lightboxSwapTimeout);
+    lightboxSwapTimeout = null;
+  }
+
   // Fade out image and scale down slightly during swap
   lightboxImg.style.opacity = "0";
   lightboxImg.style.transform = "scale(0.95)";
   
-  setTimeout(() => {
+  lightboxSwapTimeout = setTimeout(() => {
     lightboxImg.onload = () => {
       lightboxImg.style.opacity = "1";
       lightboxImg.style.transform = "scale(1)";
@@ -488,6 +517,7 @@ function updateLightboxContent() {
     lightboxImg.alt = photo.title;
     lightboxTitle.textContent = photo.title;
     lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
+    preloadAdjacentPhotos(currentPhotoIndex);
   }, 150);
 }
 
