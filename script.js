@@ -308,12 +308,16 @@ function updateLightboxContent() {
   lightboxImg.style.transform = "scale(0.95)";
   
   lightboxSwapTimeout = setTimeout(() => {
+    const domItems = galleryGrid ? galleryGrid.querySelectorAll(".photo-item") : [];
+    const domImg = domItems[currentPhotoIndex] ? domItems[currentPhotoIndex].querySelector(".photo-img") : null;
+    const targetSrc = (domImg && domImg.src) ? domImg.src : photo.src;
+
     const showLightboxImg = () => {
       lightboxImg.style.opacity = "1";
       lightboxImg.style.transform = "scale(1)";
     };
     lightboxImg.onload = showLightboxImg;
-    lightboxImg.src = photo.src;
+    lightboxImg.src = targetSrc;
     lightboxImg.alt = `Sachin Mandawi - ${photo.title}`;
     if (lightboxImg.complete && lightboxImg.naturalWidth > 0) {
       showLightboxImg();
