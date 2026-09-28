@@ -170,13 +170,16 @@ a,
   gap: 0.55rem;
   transition: var(--transition-normal);
   cursor: pointer;
-  border: 1px solid transparent;
+  border: none;
+  background-origin: border-box;
   box-shadow: none;
   white-space: nowrap;
 }
 
 .btn-instagram {
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background-origin: border-box;
+  border: none;
   color: #fff;
 }
 
@@ -187,8 +190,9 @@ a,
 
 .btn-pinterest {
   background: linear-gradient(135deg, #e60023 0%, #ad081b 100%);
+  background-origin: border-box;
+  border: none;
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .btn-pinterest:hover {
@@ -197,8 +201,8 @@ a,
 }
 
 .btn-github {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: var(--text-primary);
 }
 
