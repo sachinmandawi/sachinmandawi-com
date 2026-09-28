@@ -133,8 +133,24 @@ function initGallery() {
   setupLightbox();
 }
 
-// Render Photos in Grid
+// Render or Hydrate Photos in Grid
 function renderGallery(items) {
+  const existingItems = galleryGrid.querySelectorAll(".photo-item");
+  if (existingItems.length === items.length) {
+    existingItems.forEach((itemEl, index) => {
+      const imgEl = itemEl.querySelector(".photo-img");
+      if (imgEl) {
+        const markLoaded = () => imgEl.classList.add("loaded");
+        imgEl.onload = markLoaded;
+        if (imgEl.complete) markLoaded();
+      }
+      itemEl.addEventListener("click", () => {
+        openLightbox(index);
+      });
+    });
+    return;
+  }
+
   galleryGrid.innerHTML = "";
   
   items.forEach((photo, index) => {
@@ -298,7 +314,7 @@ function updateLightboxContent() {
     };
     lightboxImg.onload = showLightboxImg;
     lightboxImg.src = photo.src;
-    lightboxImg.alt = photo.title;
+    lightboxImg.alt = `Sachin Mandawi - ${photo.title}`;
     if (lightboxImg.complete && lightboxImg.naturalWidth > 0) {
       showLightboxImg();
     }
