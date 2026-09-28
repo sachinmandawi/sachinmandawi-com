@@ -1,4 +1,4 @@
-# Sachin Mandawi | Photography & Creative Portfolio
+# Sachin Mandawi | Software & Android Developer
 
 <p align="center">
   <a href="https://sachinmandawi.me">
@@ -6,13 +6,13 @@
   </a>
 </p>
 
-Official photography showcase and social portfolio of **Sachin Mandawi** (`@sachinmandawi`), deployed live on **Cloudflare Pages**.
+Official portfolio and visual showcase of **Sachin Mandawi** (`@sachinmandawi`) — **Software & Android Developer** building Android system apps, privacy tools, and web applications.
 
 ---
 
 ## 🔗 Official Live Links
 
-- 🌐 **Live Website:** [https://sachinmandawi.me](https://sachinmandawi.me)
+- 🌐 **Official Website:** [https://sachinmandawi.me](https://sachinmandawi.me)
+- 💻 **GitHub Profile:** [https://github.com/sachinmandawi](https://github.com/sachinmandawi)
 - 📷 **Instagram:** [https://www.instagram.com/sachinmandawi](https://www.instagram.com/sachinmandawi)
 - 📌 **Pinterest Showcase:** [https://in.pinterest.com/sachinmandawi/](https://in.pinterest.com/sachinmandawi/)
-- 💻 **GitHub Profile:** [https://github.com/sachinmandawi](https://github.com/sachinmandawi)
