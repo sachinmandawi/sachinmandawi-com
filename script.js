@@ -297,35 +297,23 @@ function preloadAdjacentPhotos(index) {
 function updateLightboxContent() {
   const photo = filteredPhotos[currentPhotoIndex];
   if (!photo) return;
-  
+
   if (lightboxSwapTimeout) {
     clearTimeout(lightboxSwapTimeout);
     lightboxSwapTimeout = null;
   }
 
-  // Fade out image and scale down slightly during swap
-  lightboxImg.style.opacity = "0";
-  lightboxImg.style.transform = "scale(0.95)";
-  
-  lightboxSwapTimeout = setTimeout(() => {
-    const domItems = galleryGrid ? galleryGrid.querySelectorAll(".photo-item") : [];
-    const domImg = domItems[currentPhotoIndex] ? domItems[currentPhotoIndex].querySelector(".photo-img") : null;
-    const targetSrc = (domImg && domImg.src) ? domImg.src : photo.src;
+  const domItems = galleryGrid ? galleryGrid.querySelectorAll(".photo-item") : [];
+  const domImg = domItems[currentPhotoIndex] ? domItems[currentPhotoIndex].querySelector(".photo-img") : null;
+  const targetSrc = (domImg && (domImg.currentSrc || domImg.src)) ? (domImg.currentSrc || domImg.src) : photo.src;
 
-    const showLightboxImg = () => {
-      lightboxImg.style.opacity = "1";
-      lightboxImg.style.transform = "scale(1)";
-    };
-    lightboxImg.onload = showLightboxImg;
-    lightboxImg.src = targetSrc;
-    lightboxImg.alt = `Sachin Mandawi - ${photo.title}`;
-    if (lightboxImg.complete && lightboxImg.naturalWidth > 0) {
-      showLightboxImg();
-    }
-    lightboxTitle.textContent = photo.title;
-    lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
-    preloadAdjacentPhotos(currentPhotoIndex);
-  }, 140);
+  lightboxImg.src = targetSrc;
+  lightboxImg.alt = `Sachin Mandawi - ${photo.title}`;
+  lightboxImg.style.opacity = "1";
+  lightboxImg.style.transform = "scale(1)";
+  lightboxTitle.textContent = photo.title;
+  lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
+  preloadAdjacentPhotos(currentPhotoIndex);
 }
 
 // Initialize on DOM Load
