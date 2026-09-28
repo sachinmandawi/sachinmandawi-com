@@ -80,7 +80,7 @@
   </script>
 
   <!-- Link CSS stylesheet with cache-busting version -->
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
@@ -111,99 +111,45 @@
       </div>
     </header>
 
-
-
-    <!-- Photos Grid Section -->
+    <!-- Photos Grid Section (Open & Visible to All Visitors & Search Engines) -->
     <main class="gallery-section">
-      <!-- Locked State: Unlock Photos Gate -->
-      <div id="vaultGate" class="vault-gate">
-        <button id="btnShowVault" class="btn-unlock-trigger">
-          <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span>Unlock Photos</span>
-        </button>
-
-        <div id="vaultFormCard" class="vault-form-card hidden">
-          <button id="btnCloseVault" class="vault-close-btn" aria-label="Close Vault">✕</button>
-
-          <div class="vault-header-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-          </div>
-
-          <h2 class="vault-title">How Well Do You Know Me?</h2>
-          <p class="vault-subtitle">Enter my birth date to unlock photos for 5 mins</p>
-
-          <!-- Modern 3-Slot Interactive Birthday Display -->
-          <div class="dob-modern-slots">
-            <!-- Day Slot -->
-            <div class="dob-slot">
-              <span class="slot-label">DAY</span>
-              <div class="slot-stepper">
-                <button type="button" class="step-btn" data-action="day-down" aria-label="Previous Day">−</button>
-                <input type="text" id="dobDayInput" class="slot-input" inputmode="numeric" maxlength="2" placeholder="" value="">
-                <button type="button" class="step-btn" data-action="day-up" aria-label="Next Day">+</button>
-              </div>
-            </div>
-
-            <!-- Month Slot (Toggles sleek custom month grid) -->
-            <div class="dob-slot">
-              <span class="slot-label">MONTH</span>
-              <button type="button" id="btnMonthToggle" class="slot-month-btn" aria-label="Select Month">
-                <span id="selectedMonthText"></span>
-                <svg class="chevron-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-              </button>
-            </div>
-
-            <!-- Year Slot -->
-            <div class="dob-slot">
-              <span class="slot-label">YEAR</span>
-              <div class="slot-stepper">
-                <button type="button" class="step-btn" data-action="year-down" aria-label="Previous Year">−</button>
-                <input type="text" id="dobYearInput" class="slot-input" inputmode="numeric" maxlength="4" placeholder="" value="">
-                <button type="button" class="step-btn" data-action="year-up" aria-label="Next Year">+</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Custom Month Pill Grid (Collapsed by default, opens only on click) -->
-          <div id="monthPickerGrid" class="month-picker-grid hidden">
-            <button type="button" class="month-pill" data-month="1">Jan</button>
-            <button type="button" class="month-pill" data-month="2">Feb</button>
-            <button type="button" class="month-pill" data-month="3">Mar</button>
-            <button type="button" class="month-pill" data-month="4">Apr</button>
-            <button type="button" class="month-pill" data-month="5">May</button>
-            <button type="button" class="month-pill" data-month="6">Jun</button>
-            <button type="button" class="month-pill" data-month="7">Jul</button>
-            <button type="button" class="month-pill" data-month="8">Aug</button>
-            <button type="button" class="month-pill" data-month="9">Sep</button>
-            <button type="button" class="month-pill" data-month="10">Oct</button>
-            <button type="button" class="month-pill" data-month="11">Nov</button>
-            <button type="button" class="month-pill" data-month="12">Dec</button>
-          </div>
-
-          <p id="vaultError" class="vault-error hidden">Incorrect date. Please try again.</p>
-
-          <button id="btnConfirmUnlock" class="btn-confirm-unlock">
-            <span>Unlock Gallery</span>
-          </button>
+      <div id="galleryGrid" class="gallery-grid">
+        <div class="photo-item tall" data-category="Portraits">
+          <img src="images/IMG_20240817_194908_798.jpg?v=5" alt="Sachin Mandawi - Golden Hour Mood" title="Sachin Mandawi - Golden Hour Mood" width="1800" height="1800" class="photo-img loaded" loading="eager" decoding="async">
         </div>
-      </div>
-
-      <!-- Unlocked State: 5-Minute Live Countdown Banner -->
-      <div id="unlockTimerBar" class="unlock-timer-bar hidden">
-        <div class="timer-info">
-          <span class="timer-text">Auto-locks in <strong id="timerCountdown">05:00</strong></span>
+        <div class="photo-item normal" data-category="Creative">
+          <img src="images/Picsart_24-08-19_09-52-39-872.jpg?v=5" alt="Sachin Mandawi - Vibrant Cyan" title="Sachin Mandawi - Vibrant Cyan" width="1800" height="1200" class="photo-img loaded" loading="eager" decoding="async">
         </div>
-        <button id="btnLockNow" class="btn-lock-now">Lock Now</button>
-      </div>
-
-      <div id="galleryGrid" class="gallery-grid hidden">
-        <!-- Javascript will dynamically inject the photo-items here when unlocked -->
+        <div class="photo-item wide" data-category="Creative">
+          <img src="images/Picsart_24-08-19_09-58-24-028.jpg?v=5" alt="Sachin Mandawi - Neon Reflections" title="Sachin Mandawi - Neon Reflections" width="1800" height="1200" class="photo-img loaded" loading="eager" decoding="async">
+        </div>
+        <div class="photo-item normal" data-category="Portraits">
+          <img src="images/Picsart_24-08-19_10-04-30-992.jpg?v=5" alt="Sachin Mandawi - Warm Silhouette" title="Sachin Mandawi - Warm Silhouette" width="1800" height="1200" class="photo-img loaded" loading="eager" decoding="async">
+        </div>
+        <div class="photo-item large" data-category="Portraits">
+          <img src="images/Picsart_24-08-19_10-22-45-925.jpg?v=5" alt="Sachin Mandawi - Urban Shadow" title="Sachin Mandawi - Urban Shadow" width="1200" height="1800" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item normal" data-category="Creative">
+          <img src="images/Picsart_24-08-19_19-01-46-603.jpg?v=5" alt="Sachin Mandawi - Dreamy Overlay" title="Sachin Mandawi - Dreamy Overlay" width="1800" height="1200" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item normal" data-category="Portraits">
+          <img src="images/Picsart_24-08-19_19-04-31-440.jpg?v=5" alt="Sachin Mandawi - Sunlit Portrait" title="Sachin Mandawi - Sunlit Portrait" width="1800" height="1200" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item wide" data-category="Creative">
+          <img src="images/Picsart_24-08-19_19-20-37-794.jpg?v=5" alt="Sachin Mandawi - Midnight Blue" title="Sachin Mandawi - Midnight Blue" width="1800" height="1200" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item normal" data-category="Creative">
+          <img src="images/Picsart_24-08-19_19-31-10-183.jpg?v=5" alt="Sachin Mandawi - Crimson Hue" title="Sachin Mandawi - Crimson Hue" width="1200" height="1800" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item normal" data-category="Creative">
+          <img src="images/Picsart_26-04-30_13-45-27-417.jpg?v=5" alt="Sachin Mandawi - Ethereal Light" title="Sachin Mandawi - Ethereal Light" width="1800" height="1800" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item normal" data-category="Portraits">
+          <img src="images/new2.jpg?v=5" alt="Sachin Mandawi - Contrast Play" title="Sachin Mandawi - Contrast Play" width="1800" height="1200" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
+        <div class="photo-item tall" data-category="Portraits">
+          <img src="images/media__1784133569099.jpg?v=5" alt="Sachin Mandawi - Scooty Ride" title="Sachin Mandawi - Scooty Ride" width="682" height="1024" class="photo-img loaded" loading="lazy" decoding="async">
+        </div>
       </div>
     </main>
 
@@ -245,6 +191,6 @@
   </div>
 
   <!-- Link Javascript file with cache-busting version -->
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
