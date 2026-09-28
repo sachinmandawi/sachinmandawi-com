@@ -397,7 +397,8 @@ function renderGallery(items) {
     
     const imgEl = document.createElement("img");
     imgEl.src = photo.src;
-    imgEl.alt = photo.title;
+    imgEl.alt = `Sachin Mandawi - ${photo.title}`;
+    imgEl.title = `Sachin Mandawi - ${photo.title}`;
     imgEl.width = photo.width;
     imgEl.height = photo.height;
     imgEl.className = "photo-img";

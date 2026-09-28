@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /images/
+
+User-agent: Googlebot
+Allow: /
+Allow: /images/
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /images/
+
+Sitemap: https://sachinmandawi.me/sitemap.xml
