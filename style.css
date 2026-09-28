@@ -181,6 +181,17 @@ a,
   opacity: 0.95;
 }
 
+.btn-pinterest {
+  background: linear-gradient(135deg, #e60023 0%, #ad081b 100%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.btn-pinterest:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
 .btn-github {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
