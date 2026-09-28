@@ -149,9 +149,9 @@ a,
 /* Social Buttons */
 .social-links {
   display: grid;
-  grid-template-columns: repeat(3, 160px);
+  grid-template-columns: repeat(4, 148px);
   justify-content: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   margin-top: 1rem;
 }
 
@@ -209,6 +209,19 @@ a,
 .btn-github:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.26);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-x {
+  background: rgba(15, 20, 25, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.btn-x:hover {
+  background: rgba(30, 35, 42, 1);
+  border-color: rgba(255, 255, 255, 0.38);
   color: #fff;
   transform: translateY(-2px);
 }
@@ -853,10 +866,10 @@ a,
   }
 
   .social-links {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.55rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 340px;
     margin: 0.85rem auto 0 auto;
   }
 
