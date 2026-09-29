@@ -4,7 +4,7 @@ const photos = [
     id: 1,
     title: "Golden Hour Mood",
     category: "Portraits",
-    src: "images/IMG_20240817_194908_798.jpg?v=5",
+    src: "images/IMG_20240817_194908_798.jpg?v=15",
     width: 1800,
     height: 1800,
     sizeClass: "tall"
@@ -13,7 +13,7 @@ const photos = [
     id: 2,
     title: "Vibrant Cyan",
     category: "Creative",
-    src: "images/Picsart_24-08-19_09-52-39-872.jpg?v=5",
+    src: "images/Picsart_24-08-19_09-52-39-872.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "normal"
@@ -22,7 +22,7 @@ const photos = [
     id: 3,
     title: "Neon Reflections",
     category: "Creative",
-    src: "images/Picsart_24-08-19_09-58-24-028.jpg?v=5",
+    src: "images/Picsart_24-08-19_09-58-24-028.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "wide"
@@ -31,7 +31,7 @@ const photos = [
     id: 4,
     title: "Warm Silhouette",
     category: "Portraits",
-    src: "images/Picsart_24-08-19_10-04-30-992.jpg?v=5",
+    src: "images/Picsart_24-08-19_10-04-30-992.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "normal"
@@ -40,7 +40,7 @@ const photos = [
     id: 5,
     title: "Urban Shadow",
     category: "Portraits",
-    src: "images/Picsart_24-08-19_10-22-45-925.jpg?v=5",
+    src: "images/Picsart_24-08-19_10-22-45-925.jpg?v=15",
     width: 1200,
     height: 1800,
     sizeClass: "large"
@@ -49,7 +49,7 @@ const photos = [
     id: 6,
     title: "Dreamy Overlay",
     category: "Creative",
-    src: "images/Picsart_24-08-19_19-01-46-603.jpg?v=5",
+    src: "images/Picsart_24-08-19_19-01-46-603.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "normal"
@@ -58,7 +58,7 @@ const photos = [
     id: 7,
     title: "Sunlit Portrait",
     category: "Portraits",
-    src: "images/Picsart_24-08-19_19-04-31-440.jpg?v=5",
+    src: "images/Picsart_24-08-19_19-04-31-440.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "normal"
@@ -67,7 +67,7 @@ const photos = [
     id: 8,
     title: "Midnight Blue",
     category: "Creative",
-    src: "images/Picsart_24-08-19_19-20-37-794.jpg?v=5",
+    src: "images/Picsart_24-08-19_19-20-37-794.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "wide"
@@ -76,7 +76,7 @@ const photos = [
     id: 9,
     title: "Crimson Hue",
     category: "Creative",
-    src: "images/Picsart_24-08-19_19-31-10-183.jpg?v=5",
+    src: "images/Picsart_24-08-19_19-31-10-183.jpg?v=15",
     width: 1200,
     height: 1800,
     sizeClass: "normal"
@@ -85,7 +85,7 @@ const photos = [
     id: 10,
     title: "Ethereal Light",
     category: "Creative",
-    src: "images/Picsart_26-04-30_13-45-27-417.jpg?v=5",
+    src: "images/Picsart_26-04-30_13-45-27-417.jpg?v=15",
     width: 1800,
     height: 1800,
     sizeClass: "normal"
@@ -94,7 +94,7 @@ const photos = [
     id: 11,
     title: "Contrast Play",
     category: "Portraits",
-    src: "images/new2.jpg?v=5",
+    src: "images/new2.jpg?v=15",
     width: 1800,
     height: 1200,
     sizeClass: "normal"
@@ -103,7 +103,7 @@ const photos = [
     id: 12,
     title: "Scooty Ride",
     category: "Portraits",
-    src: "images/media__1784133569099.jpg?v=5",
+    src: "images/media__1784133569099.jpg?v=15",
     width: 682,
     height: 1024,
     sizeClass: "tall"
@@ -140,9 +140,20 @@ function renderGallery(items) {
     existingItems.forEach((itemEl, index) => {
       const imgEl = itemEl.querySelector(".photo-img");
       if (imgEl) {
+        const cleanFile = items[index].src.split("?")[0];
+        const fallbackUrl = "https://raw.githubusercontent.com/sachinmandawi/sachinmandawi-com/main/" + cleanFile;
         const markLoaded = () => imgEl.classList.add("loaded");
         imgEl.onload = markLoaded;
-        if (imgEl.complete) markLoaded();
+        imgEl.onerror = () => {
+          if (imgEl.src !== fallbackUrl) {
+            imgEl.src = fallbackUrl;
+          }
+        };
+        if (imgEl.complete && imgEl.naturalWidth > 0) {
+          markLoaded();
+        } else if (imgEl.complete && imgEl.naturalWidth === 0) {
+          imgEl.src = fallbackUrl;
+        }
       }
       itemEl.addEventListener("click", () => {
         openLightbox(index);
