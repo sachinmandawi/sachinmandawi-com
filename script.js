@@ -197,122 +197,40 @@ function renderGallery(items) {
 // Lightbox Core Logic
 function setupLightbox() {
   // Close Lightbox
-  btnClose.addEventListener("click", closeLightbox);
+  if (btnClose) {
+    btnClose.addEventListener("click", closeLightbox);
+  }
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox || e.target.classList.contains("lightbox-content")) {
       closeLightbox();
     }
   });
 
-  // Next / Prev Buttons
-  btnNext.addEventListener("click", (e) => {
-    e.stopPropagation();
-    nextPhoto();
-  });
-  
-  btnPrev.addEventListener("click", (e) => {
-    e.stopPropagation();
-    prevPhoto();
-  });
-
-  // Keyboard navigation
+  // Escape key to close
   document.addEventListener("keydown", (e) => {
     if (!lightbox.classList.contains("active")) return;
-    
-    if (e.key === "ArrowRight") nextPhoto();
-    if (e.key === "ArrowLeft") prevPhoto();
     if (e.key === "Escape") closeLightbox();
   });
-
-  // Touch/Swipe gestures for mobile devices
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let touchStartY = 0;
-  let touchEndY = 0;
-
-  lightbox.addEventListener("touchstart", (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, { passive: true });
-
-  lightbox.addEventListener("touchend", (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-  }, { passive: true });
-
-  function handleSwipe() {
-    const thresholdX = 50; // Minimum swipe distance horizontally
-    const thresholdY = 80; // Allow vertical swipes to close lightbox
-    
-    const diffX = touchEndX - touchStartX;
-    const diffY = touchEndY - touchStartY;
-
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-      // Horizontal Swipes
-      if (Math.abs(diffX) > thresholdX) {
-        if (diffX > 0) {
-          prevPhoto(); // Swiped right -> previous photo
-        } else {
-          nextPhoto(); // Swiped left -> next photo
-        }
-      }
-    } else {
-      // Vertical Swipes
-      if (Math.abs(diffY) > thresholdY) {
-        closeLightbox(); // Swipe up or down -> close lightbox
-      }
-    }
-  }
 }
 
-// Open Lightbox
+// Open Lightbox (Single Photo Preview — No Slider)
 function openLightbox(index) {
   currentPhotoIndex = index;
   updateLightboxContent();
   lightbox.classList.add("active");
-  document.body.style.overflow = "hidden"; // Prevent scrolling
+  document.body.style.overflow = "hidden";
 }
 
 // Close Lightbox
 function closeLightbox() {
   lightbox.classList.remove("active");
-  document.body.style.overflow = ""; // Restore scrolling
-}
-
-// Next Image
-function nextPhoto() {
-  currentPhotoIndex = (currentPhotoIndex + 1) % filteredPhotos.length;
-  updateLightboxContent();
-}
-
-// Previous Image
-function prevPhoto() {
-  currentPhotoIndex = (currentPhotoIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
-  updateLightboxContent();
-}
-
-let lightboxSwapTimeout = null;
-
-function preloadAdjacentPhotos(index) {
-  if (!filteredPhotos || filteredPhotos.length <= 1) return;
-  const prevIdx = (index - 1 + filteredPhotos.length) % filteredPhotos.length;
-  const nextIdx = (index + 1) % filteredPhotos.length;
-  [prevIdx, nextIdx].forEach((idx) => {
-    const img = new Image();
-    img.src = filteredPhotos[idx].src;
-  });
+  document.body.style.overflow = "";
 }
 
 // Update Lightbox Visuals
 function updateLightboxContent() {
   const photo = filteredPhotos[currentPhotoIndex];
   if (!photo) return;
-
-  if (lightboxSwapTimeout) {
-    clearTimeout(lightboxSwapTimeout);
-    lightboxSwapTimeout = null;
-  }
 
   const domItems = galleryGrid ? galleryGrid.querySelectorAll(".photo-item") : [];
   const domImg = domItems[currentPhotoIndex] ? domItems[currentPhotoIndex].querySelector(".photo-img") : null;
@@ -322,9 +240,6 @@ function updateLightboxContent() {
   lightboxImg.alt = `Sachin Mandawi - ${photo.title}`;
   lightboxImg.style.opacity = "1";
   lightboxImg.style.transform = "scale(1)";
-  lightboxTitle.textContent = photo.title;
-  lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
-  preloadAdjacentPhotos(currentPhotoIndex);
 }
 
 // Initialize on DOM Load
