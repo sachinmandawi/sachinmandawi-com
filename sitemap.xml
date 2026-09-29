@@ -2,93 +2,93 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://sachinmandawi.me/</loc>
+    <loc>https://sachinmandawi.com/</loc>
     <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
 
     <!-- Main Profile Photo of Sachin Mandawi -->
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/sachin-mandawi.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/sachin-mandawi.jpg</image:loc>
       <image:title>Sachin Mandawi</image:title>
       <image:caption>Sachin Mandawi - Official Profile Photo, Software and Android Developer</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/profile_pic.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/profile_pic.jpg</image:loc>
       <image:title>Sachin Mandawi Portfolio</image:title>
       <image:caption>Sachin Mandawi - Software and Android Developer Portfolio</image:caption>
     </image:image>
 
     <!-- Portfolio Photos of Sachin Mandawi -->
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/IMG_20240817_194908_798.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/IMG_20240817_194908_798.jpg</image:loc>
       <image:title>Sachin Mandawi - Golden Hour Mood</image:title>
       <image:caption>Sachin Mandawi Portrait Photography - Golden Hour Mood</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_09-52-39-872.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_09-52-39-872.jpg</image:loc>
       <image:title>Sachin Mandawi - Vibrant Cyan</image:title>
       <image:caption>Sachin Mandawi Creative Photography - Vibrant Cyan</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_09-58-24-028.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_09-58-24-028.jpg</image:loc>
       <image:title>Sachin Mandawi - Neon Reflections</image:title>
       <image:caption>Sachin Mandawi Creative Photography - Neon Reflections</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_10-04-30-992.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_10-04-30-992.jpg</image:loc>
       <image:title>Sachin Mandawi - Warm Silhouette</image:title>
       <image:caption>Sachin Mandawi Portrait Photography - Warm Silhouette</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_10-22-45-925.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_10-22-45-925.jpg</image:loc>
       <image:title>Sachin Mandawi - Urban Shadow</image:title>
       <image:caption>Sachin Mandawi Portrait Photography - Urban Shadow</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_19-01-46-603.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_19-01-46-603.jpg</image:loc>
       <image:title>Sachin Mandawi - Dreamy Overlay</image:title>
       <image:caption>Sachin Mandawi Creative Photography - Dreamy Overlay</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_19-04-31-440.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_19-04-31-440.jpg</image:loc>
       <image:title>Sachin Mandawi - Sunlit Portrait</image:title>
       <image:caption>Sachin Mandawi Portrait Photography - Sunlit Portrait</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_19-20-37-794.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_19-20-37-794.jpg</image:loc>
       <image:title>Sachin Mandawi - Midnight Blue</image:title>
       <image:caption>Sachin Mandawi Creative Photography - Midnight Blue</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_24-08-19_19-31-10-183.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_24-08-19_19-31-10-183.jpg</image:loc>
       <image:title>Sachin Mandawi - Crimson Hue</image:title>
       <image:caption>Sachin Mandawi Creative Photography - Crimson Hue</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/Picsart_26-04-30_13-45-27-417.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/Picsart_26-04-30_13-45-27-417.jpg</image:loc>
       <image:title>Sachin Mandawi - Ethereal Light</image:title>
       <image:caption>Sachin Mandawi Creative Photography - Ethereal Light</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/new2.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/new2.jpg</image:loc>
       <image:title>Sachin Mandawi - Contrast Play</image:title>
       <image:caption>Sachin Mandawi Portrait Photography - Contrast Play</image:caption>
     </image:image>
 
     <image:image>
-      <image:loc>https://sachinmandawi.me/images/media__1784133569099.jpg</image:loc>
+      <image:loc>https://sachinmandawi.com/images/media__1784133569099.jpg</image:loc>
       <image:title>Sachin Mandawi - Scooty Ride</image:title>
       <image:caption>Sachin Mandawi Portrait Photography - Scooty Ride</image:caption>
     </image:image>
