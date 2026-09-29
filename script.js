@@ -194,7 +194,7 @@ function renderGallery(items) {
   });
 }
 
-// Lightbox Core Logic
+// Lightbox Core Logic (Swipe + Counter, No Arrow Buttons)
 function setupLightbox() {
   // Close Lightbox
   if (btnClose) {
@@ -206,14 +206,54 @@ function setupLightbox() {
     }
   });
 
-  // Escape key to close
+  // Keyboard navigation
   document.addEventListener("keydown", (e) => {
     if (!lightbox.classList.contains("active")) return;
+    if (e.key === "ArrowRight") nextPhoto();
+    if (e.key === "ArrowLeft") prevPhoto();
     if (e.key === "Escape") closeLightbox();
   });
+
+  // Touch/Swipe gestures for mobile devices
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let touchStartY = 0;
+  let touchEndY = 0;
+
+  lightbox.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  lightbox.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const thresholdX = 50;
+    const thresholdY = 80;
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (Math.abs(diffX) > thresholdX) {
+        if (diffX > 0) {
+          prevPhoto();
+        } else {
+          nextPhoto();
+        }
+      }
+    } else {
+      if (Math.abs(diffY) > thresholdY) {
+        closeLightbox();
+      }
+    }
+  }
 }
 
-// Open Lightbox (Single Photo Preview — No Slider)
+// Open Lightbox
 function openLightbox(index) {
   currentPhotoIndex = index;
   updateLightboxContent();
@@ -225,6 +265,28 @@ function openLightbox(index) {
 function closeLightbox() {
   lightbox.classList.remove("active");
   document.body.style.overflow = "";
+}
+
+// Next Image
+function nextPhoto() {
+  currentPhotoIndex = (currentPhotoIndex + 1) % filteredPhotos.length;
+  updateLightboxContent();
+}
+
+// Previous Image
+function prevPhoto() {
+  currentPhotoIndex = (currentPhotoIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
+  updateLightboxContent();
+}
+
+function preloadAdjacentPhotos(index) {
+  if (!filteredPhotos || filteredPhotos.length <= 1) return;
+  const prevIdx = (index - 1 + filteredPhotos.length) % filteredPhotos.length;
+  const nextIdx = (index + 1) % filteredPhotos.length;
+  [prevIdx, nextIdx].forEach((idx) => {
+    const img = new Image();
+    img.src = filteredPhotos[idx].src;
+  });
 }
 
 // Update Lightbox Visuals
@@ -240,6 +302,9 @@ function updateLightboxContent() {
   lightboxImg.alt = `Sachin Mandawi - ${photo.title}`;
   lightboxImg.style.opacity = "1";
   lightboxImg.style.transform = "scale(1)";
+  if (lightboxTitle) lightboxTitle.textContent = photo.title;
+  if (lightboxCounter) lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
+  preloadAdjacentPhotos(currentPhotoIndex);
 }
 
 // Initialize on DOM Load

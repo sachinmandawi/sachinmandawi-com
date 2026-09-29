@@ -206,7 +206,7 @@
 
   </div>
 
-  <!-- Lightbox Modal (Single Photo Preview — No Slider) -->
+  <!-- Lightbox Modal (Swipe + Counter, No Slider Buttons) -->
   <div id="lightbox" class="lightbox">
     <!-- Close Lightbox Button -->
     <button id="btnClose" class="lightbox-btn btn-close" aria-label="Close Lightbox">
@@ -216,9 +216,15 @@
     <div class="lightbox-content">
       <img id="lightboxImg" class="lightbox-img" src="" alt="Fullscreen Photo">
     </div>
+
+    <!-- Lightbox details overlay -->
+    <div class="lightbox-info">
+      <h2 id="lightboxTitle" class="lightbox-title">Photo Title</h2>
+      <span id="lightboxCounter" class="lightbox-counter">1 / 12</span>
+    </div>
   </div>
 
   <!-- Link Javascript file with cache-busting version -->
-  <script src="script.js?v=16"></script>
+  <script src="script.js?v=17"></script>
 </body>
 </html>
