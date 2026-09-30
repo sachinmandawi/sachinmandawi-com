@@ -550,6 +550,8 @@ function setupHeroModals() {
 
   function openSheetModal(modal, triggerBtn) {
     if (!modal) return;
+    const sheetCard = modal.querySelector(".sheet-card");
+    if (sheetCard) sheetCard.style.transform = "";
     modal.classList.add("active");
     modal.setAttribute("aria-hidden", "false");
     if (triggerBtn) triggerBtn.setAttribute("aria-expanded", "true");
@@ -558,6 +560,8 @@ function setupHeroModals() {
 
   function closeSheetModal(modal) {
     if (!modal) return;
+    const sheetCard = modal.querySelector(".sheet-card");
+    if (sheetCard) sheetCard.style.transform = "";
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");
     if (btnOpenSocials && modal === modalSocials) btnOpenSocials.setAttribute("aria-expanded", "false");
@@ -606,7 +610,9 @@ function setupHeroModals() {
       let isDragging = false;
 
       sheetCard.addEventListener("touchstart", (e) => {
-        if (sheetCard.scrollTop <= 0) {
+        const target = e.target;
+        const isHeaderOrHandle = target.closest(".sheet-handle") || target.closest(".sheet-header");
+        if (sheetCard.scrollTop <= 0 && isHeaderOrHandle) {
           touchStartY = e.touches[0].clientY;
           touchDeltaY = 0;
           isDragging = true;
@@ -630,7 +636,7 @@ function setupHeroModals() {
         if (touchDeltaY > 75) {
           closeSheetModal(modal);
           setTimeout(() => {
-            sheetCard.style.transform = "";
+            if (sheetCard) sheetCard.style.transform = "";
           }, 300);
         } else {
           sheetCard.style.transform = "";
