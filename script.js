@@ -129,11 +129,12 @@ let zoomScale = 1;
 let panX = 0;
 let panY = 0;
 
-// Initialize Open Gallery & Lightbox
+// Initialize Open Gallery, Modals & Lightbox
 function initGallery() {
   try {
     localStorage.removeItem("sachin_portfolio_unlock_expiry");
   } catch (_) {}
+  setupHeroModals();
   renderGallery(photos);
   renderProgressPills();
   setupLightbox();
@@ -538,6 +539,116 @@ function updateLightboxContent(direction = 0) {
   }
 
   preloadAdjacentPhotos(currentPhotoIndex);
+}
+
+// Setup Hero Sheet Modals (Social Media & Websites/Apps)
+function setupHeroModals() {
+  const btnOpenSocials = document.getElementById("btnOpenSocials");
+  const btnOpenProjects = document.getElementById("btnOpenProjects");
+  const modalSocials = document.getElementById("modalSocials");
+  const modalProjects = document.getElementById("modalProjects");
+
+  function openSheetModal(modal, triggerBtn) {
+    if (!modal) return;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    if (triggerBtn) triggerBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSheetModal(modal) {
+    if (!modal) return;
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    if (btnOpenSocials && modal === modalSocials) btnOpenSocials.setAttribute("aria-expanded", "false");
+    if (btnOpenProjects && modal === modalProjects) btnOpenProjects.setAttribute("aria-expanded", "false");
+
+    // Only restore body overflow if lightbox is not currently open
+    if (!lightbox || !lightbox.classList.contains("active")) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  if (btnOpenSocials && modalSocials) {
+    btnOpenSocials.addEventListener("click", () => {
+      closeSheetModal(modalProjects);
+      openSheetModal(modalSocials, btnOpenSocials);
+    });
+  }
+
+  if (btnOpenProjects && modalProjects) {
+    btnOpenProjects.addEventListener("click", () => {
+      closeSheetModal(modalSocials);
+      openSheetModal(modalProjects, btnOpenProjects);
+    });
+  }
+
+  [modalSocials, modalProjects].forEach((modal) => {
+    if (!modal) return;
+
+    // Close button click
+    const closeBtn = modal.querySelector(".sheet-close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => closeSheetModal(modal));
+    }
+
+    // Backdrop click
+    const backdrop = modal.querySelector(".sheet-backdrop");
+    if (backdrop) {
+      backdrop.addEventListener("click", () => closeSheetModal(modal));
+    }
+
+    // Touch swipe-down physics to dismiss on mobile
+    const sheetCard = modal.querySelector(".sheet-card");
+    if (sheetCard) {
+      let touchStartY = 0;
+      let touchDeltaY = 0;
+      let isDragging = false;
+
+      sheetCard.addEventListener("touchstart", (e) => {
+        if (sheetCard.scrollTop <= 0) {
+          touchStartY = e.touches[0].clientY;
+          touchDeltaY = 0;
+          isDragging = true;
+        }
+      }, { passive: true });
+
+      sheetCard.addEventListener("touchmove", (e) => {
+        if (!isDragging) return;
+        const currentY = e.touches[0].clientY;
+        touchDeltaY = currentY - touchStartY;
+        if (touchDeltaY > 0) {
+          sheetCard.style.transform = `translateY(${touchDeltaY}px)`;
+          sheetCard.style.transition = "none";
+        }
+      }, { passive: true });
+
+      sheetCard.addEventListener("touchend", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        sheetCard.style.transition = "transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)";
+        if (touchDeltaY > 75) {
+          closeSheetModal(modal);
+          setTimeout(() => {
+            sheetCard.style.transform = "";
+          }, 300);
+        } else {
+          sheetCard.style.transform = "";
+        }
+      });
+    }
+  });
+
+  // Global Escape key support for active sheet modal
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (modalSocials && modalSocials.classList.contains("active")) {
+        closeSheetModal(modalSocials);
+      } else if (modalProjects && modalProjects.classList.contains("active")) {
+        closeSheetModal(modalProjects);
+      }
+    }
+  });
 }
 
 // Initialize on DOM Load
