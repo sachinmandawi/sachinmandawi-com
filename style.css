@@ -42,6 +42,8 @@ html {
   background-color: var(--bg-color);
   color: var(--text-primary);
   overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -51,7 +53,15 @@ body {
   line-height: 1.6;
   position: relative;
   overflow-x: hidden;
+  overscroll-behavior-y: contain;
   -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.modal-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  overscroll-behavior-y: none !important;
 }
 
 button,
@@ -262,6 +272,9 @@ a,
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  touch-action: none;
   transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
               visibility 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -279,6 +292,7 @@ a,
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   cursor: pointer;
+  touch-action: none;
 }
 
 .sheet-card {
@@ -302,6 +316,9 @@ a,
   max-height: 88dvh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
 }
 
 .sheet-modal.active .sheet-card {
@@ -315,6 +332,10 @@ a,
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.24);
   margin: 0 auto 1.1rem auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
 }
 
 .sheet-header {
@@ -323,6 +344,9 @@ a,
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.25rem;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .sheet-header-text {
@@ -1412,6 +1436,9 @@ a,
   .sheet-modal {
     padding: 0;
     align-items: flex-end;
+    touch-action: none;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
   }
 
   .sheet-card {
@@ -1428,6 +1455,8 @@ a,
     transform: translateY(100%);
     max-height: 85vh;
     max-height: 85dvh;
+    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
   }
 
   .sheet-modal.active .sheet-card {

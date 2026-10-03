@@ -359,6 +359,7 @@ function setupLightbox() {
 
   lightbox.addEventListener("touchmove", (e) => {
     if (!lightbox.classList.contains("active")) return;
+    if (e.cancelable) e.preventDefault();
 
     if (isPinching && e.touches.length === 2) {
       const dist = getDistance(e.touches[0], e.touches[1]);
@@ -393,7 +394,7 @@ function setupLightbox() {
       const shrink = Math.max(0.76, 1 - Math.abs(dy) / 850);
       lightboxImg.style.transform = `translate3d(${dx * 0.25}px, ${dy}px, 0) scale(${shrink})`;
     }
-  }, { passive: true });
+  }, { passive: false });
 
   lightbox.addEventListener("touchend", (e) => {
     if (isPinching) {
@@ -551,17 +552,34 @@ function setupHeroModals() {
   function openSheetModal(modal, triggerBtn) {
     if (!modal) return;
     const sheetCard = modal.querySelector(".sheet-card");
-    if (sheetCard) sheetCard.style.transform = "";
+    const backdrop = modal.querySelector(".sheet-backdrop");
+    if (sheetCard) {
+      sheetCard.style.transform = "";
+      sheetCard.style.transition = "";
+    }
+    if (backdrop) {
+      backdrop.style.opacity = "";
+      backdrop.style.transition = "";
+    }
     modal.classList.add("active");
     modal.setAttribute("aria-hidden", "false");
     if (triggerBtn) triggerBtn.setAttribute("aria-expanded", "true");
+    document.body.classList.add("modal-open");
     document.body.style.overflow = "hidden";
   }
 
   function closeSheetModal(modal) {
     if (!modal) return;
     const sheetCard = modal.querySelector(".sheet-card");
-    if (sheetCard) sheetCard.style.transform = "";
+    const backdrop = modal.querySelector(".sheet-backdrop");
+    if (sheetCard) {
+      sheetCard.style.transform = "";
+      sheetCard.style.transition = "";
+    }
+    if (backdrop) {
+      backdrop.style.opacity = "";
+      backdrop.style.transition = "";
+    }
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");
     if (btnOpenSocials && modal === modalSocials) btnOpenSocials.setAttribute("aria-expanded", "false");
@@ -569,6 +587,7 @@ function setupHeroModals() {
 
     // Only restore body overflow if lightbox is not currently open
     if (!lightbox || !lightbox.classList.contains("active")) {
+      document.body.classList.remove("modal-open");
       document.body.style.overflow = "";
     }
   }
@@ -602,46 +621,95 @@ function setupHeroModals() {
       backdrop.addEventListener("click", () => closeSheetModal(modal));
     }
 
-    // Touch swipe-down physics to dismiss on mobile
+    // Touch swipe-down physics to dismiss on mobile without triggering browser pull-to-refresh
     const sheetCard = modal.querySelector(".sheet-card");
     if (sheetCard) {
       let touchStartY = 0;
+      let touchStartX = 0;
       let touchDeltaY = 0;
       let isDragging = false;
+      let canDrag = false;
 
       sheetCard.addEventListener("touchstart", (e) => {
+        if (e.touches.length !== 1) return;
         const target = e.target;
-        const isHeaderOrHandle = target.closest(".sheet-handle") || target.closest(".sheet-header");
-        if (sheetCard.scrollTop <= 0 && isHeaderOrHandle) {
-          touchStartY = e.touches[0].clientY;
-          touchDeltaY = 0;
-          isDragging = true;
+        // Don't intercept clicks on links or non-close buttons
+        if (target.closest("a") || target.closest("button:not(.sheet-close-btn)")) {
+          return;
         }
+
+        const t = e.touches[0];
+        touchStartY = t.clientY;
+        touchStartX = t.clientX;
+        touchDeltaY = 0;
+        isDragging = false;
+        // Drag allowed if sheet content is at the top of scroll
+        canDrag = sheetCard.scrollTop <= 0;
       }, { passive: true });
 
       sheetCard.addEventListener("touchmove", (e) => {
-        if (!isDragging) return;
-        const currentY = e.touches[0].clientY;
-        touchDeltaY = currentY - touchStartY;
-        if (touchDeltaY > 0) {
-          sheetCard.style.transform = `translateY(${touchDeltaY}px)`;
-          sheetCard.style.transition = "none";
-        }
-      }, { passive: true });
+        if (!canDrag || e.touches.length !== 1) return;
 
-      sheetCard.addEventListener("touchend", () => {
+        const currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const dy = currentY - touchStartY;
+        const dx = currentX - touchStartX;
+
+        // Downward vertical drag
+        if (dy > 0 && Math.abs(dy) > Math.abs(dx)) {
+          // CRITICAL: Block the native browser pull-to-refresh!
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+          isDragging = true;
+          touchDeltaY = dy;
+          sheetCard.style.transition = "none";
+          sheetCard.style.transform = `translateY(${dy}px)`;
+
+          // Interactive backdrop dimming feedback
+          if (backdrop) {
+            const opacityProgress = Math.max(0.2, 1 - (dy / 380));
+            backdrop.style.opacity = opacityProgress.toFixed(2);
+          }
+        }
+      }, { passive: false }); // MUST be passive: false so preventDefault() stops browser pull-to-refresh!
+
+      const endDrag = () => {
+        canDrag = false;
         if (!isDragging) return;
         isDragging = false;
-        sheetCard.style.transition = "transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)";
-        if (touchDeltaY > 75) {
-          closeSheetModal(modal);
-          setTimeout(() => {
-            if (sheetCard) sheetCard.style.transform = "";
-          }, 300);
-        } else {
-          sheetCard.style.transform = "";
+
+        sheetCard.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease";
+        if (backdrop) {
+          backdrop.style.transition = "opacity 0.25s ease";
         }
-      });
+
+        // Dismiss threshold: 55px (natural and responsive)
+        if (touchDeltaY > 55) {
+          sheetCard.style.transform = "translateY(100%)";
+          if (backdrop) backdrop.style.opacity = "0";
+          setTimeout(() => {
+            closeSheetModal(modal);
+            sheetCard.style.transform = "";
+            sheetCard.style.transition = "";
+            if (backdrop) {
+              backdrop.style.opacity = "";
+              backdrop.style.transition = "";
+            }
+          }, 240);
+        } else {
+          // Rebound / spring back to open position
+          sheetCard.style.transform = "translateY(0)";
+          if (backdrop) backdrop.style.opacity = "";
+          setTimeout(() => {
+            sheetCard.style.transition = "";
+            if (backdrop) backdrop.style.transition = "";
+          }, 260);
+        }
+      };
+
+      sheetCard.addEventListener("touchend", endDrag, { passive: true });
+      sheetCard.addEventListener("touchcancel", endDrag, { passive: true });
     }
   });
 
