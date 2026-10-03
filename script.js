@@ -359,6 +359,7 @@ function setupLightbox() {
 
   lightbox.addEventListener("touchmove", (e) => {
     if (!lightbox.classList.contains("active")) return;
+    if (!isDragging && !isPinching) return;
     if (e.cancelable) e.preventDefault();
 
     if (isPinching && e.touches.length === 2) {
@@ -549,6 +550,9 @@ function setupHeroModals() {
   const modalSocials = document.getElementById("modalSocials");
   const modalProjects = document.getElementById("modalProjects");
 
+  // Ensure body overflow is clean on load
+  document.body.style.overflow = "";
+
   function openSheetModal(modal, triggerBtn) {
     if (!modal) return;
     const sheetCard = modal.querySelector(".sheet-card");
@@ -564,7 +568,6 @@ function setupHeroModals() {
     modal.classList.add("active");
     modal.setAttribute("aria-hidden", "false");
     if (triggerBtn) triggerBtn.setAttribute("aria-expanded", "true");
-    document.body.classList.add("modal-open");
     document.body.style.overflow = "hidden";
   }
 
@@ -587,7 +590,6 @@ function setupHeroModals() {
 
     // Only restore body overflow if lightbox is not currently open
     if (!lightbox || !lightbox.classList.contains("active")) {
-      document.body.classList.remove("modal-open");
       document.body.style.overflow = "";
     }
   }
