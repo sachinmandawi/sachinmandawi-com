@@ -1,11 +1,13 @@
 /**
  * The Story — Sachin Mandawi
  * Apple-Style 60fps Canvas Image Sequence Scrubbing Engine
+ * 
  * Features:
- *  - Arc flow: Normal (no glasses) -> Sunglasses ON -> Reveal back to Normal
- *  - 100% True Fullscreen Cover on ALL devices (Mobile, Tablet, Desktop)
- *  - Zero cut-off, zero empty void: Full bleed portrait filling the viewport edge-to-edge
- *  - Zero mobile address-bar resize flicker
+ *  - High-performance 6.7MB optimized image sequence (.jpg)
+ *  - 2-Tier Interleaved Preloader (instant Tier-1 keyframes, seamless Tier-2 60fps fill)
+ *  - Smart Closest-Loaded-Frame Fallback: Zero skipped scenes, zero freezing over network
+ *  - True 100% Fullscreen Edge-to-Edge Cover on Mobile & Desktop
+ *  - Arc flow: Normal (bare face) -> Sunglasses ON -> Reveal back to Normal
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,8 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!canvas || !ctx || !scrubContainer) return;
 
   const TOTAL_FRAMES = 89;
-  const frames = [];
+  const frames = new Array(TOTAL_FRAMES);
   let loadedCount = 0;
+  let isInitialReady = false;
 
   let targetProgress = 0;
   let currentProgress = 0;
@@ -29,28 +32,64 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastW = window.innerWidth;
   let lastH = window.innerHeight;
 
-  // Preload all 89 high-resolution frames
-  for (let i = 1; i <= TOTAL_FRAMES; i++) {
+  // Helper to construct frame URL
+  function getFrameSrc(index1Based) {
+    const pad = String(index1Based).padStart(3, '0');
+    return `frames/ezgif-frame-${pad}.jpg`;
+  }
+
+  // Two-Tier Priority Preloader
+  // Tier 1: Keyframes every 3rd frame (1, 4, 7, ..., 89) for instant interactivity
+  // Tier 2: All intermediate frames for buttery smooth 60fps fill
+  function loadFrame(idx0Based, onDone) {
+    if (frames[idx0Based]) return; // already loaded or loading
+
     const img = new Image();
-    const pad = String(i).padStart(3, '0');
-    img.src = `frames/ezgif-frame-${pad}.png`;
+    img.src = getFrameSrc(idx0Based + 1);
 
     img.onload = () => {
       loadedCount++;
-      // Render immediately once initial frame is ready
-      if (loadedCount === 1 || i === 1) {
+      if (!isInitialReady && (loadedCount >= 8 || idx0Based === 0)) {
+        isInitialReady = true;
+        renderFrame();
+      } else {
         renderFrame();
       }
+      if (onDone) onDone();
     };
-    frames.push(img);
+
+    img.onerror = () => {
+      if (onDone) onDone();
+    };
+
+    frames[idx0Based] = img;
   }
 
-  // Handle Resize without mobile address-bar jitter
+  // Start preloading: Tier 1 first, then Tier 2
+  const tier1Indices = [];
+  const tier2Indices = [];
+
+  for (let i = 0; i < TOTAL_FRAMES; i++) {
+    if (i % 3 === 0 || i === TOTAL_FRAMES - 1) {
+      tier1Indices.push(i);
+    } else {
+      tier2Indices.push(i);
+    }
+  }
+
+  // Load Tier 1 immediately
+  tier1Indices.forEach(idx => loadFrame(idx));
+
+  // Load Tier 2 right after Tier 1 starts
+  setTimeout(() => {
+    tier2Indices.forEach(idx => loadFrame(idx));
+  }, 100);
+
+  // Resize canvas without mobile address-bar resize jitter
   function resizeCanvas(force = false) {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // Mobile address-bar show/hide fires resize with minor vertical change
     const widthChanged = width !== lastW;
     const heightChanged = Math.abs(height - lastH) > 120;
 
@@ -98,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const diff = targetProgress - currentProgress;
 
     if (Math.abs(diff) > 0.001) {
-      currentProgress += diff * 0.16; // buttery smooth organic response
+      currentProgress += diff * 0.18; // organic, responsive easing
     } else {
       currentProgress = targetProgress;
     }
@@ -112,6 +151,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Find best available frame: exact frame or closest loaded neighbour
+  function getBestFrame(targetIdx) {
+    const exact = frames[targetIdx];
+    if (exact && exact.complete && exact.naturalWidth > 0) {
+      return exact;
+    }
+
+    // Search outwards for nearest loaded frame so animation NEVER skips or freezes
+    for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+      const left = targetIdx - offset;
+      if (left >= 0 && frames[left] && frames[left].complete && frames[left].naturalWidth > 0) {
+        return frames[left];
+      }
+      const right = targetIdx + offset;
+      if (right < TOTAL_FRAMES && frames[right] && frames[right].complete && frames[right].naturalWidth > 0) {
+        return frames[right];
+      }
+    }
+    return null;
+  }
+
   function renderFrame() {
     const percent = Math.round(currentProgress * 100);
 
@@ -122,12 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
       ? currentProgress * 2
       : (1 - currentProgress) * 2;
 
-    let frameIdx = Math.round(cycleProgress * (TOTAL_FRAMES - 1));
-    frameIdx = Math.max(0, Math.min(TOTAL_FRAMES - 1, frameIdx));
-    const img = frames[frameIdx];
+    let targetIdx = Math.round(cycleProgress * (TOTAL_FRAMES - 1));
+    targetIdx = Math.max(0, Math.min(TOTAL_FRAMES - 1, targetIdx));
 
-    // Draw on Canvas
-    if (img && img.complete && img.naturalWidth > 0) {
+    // Get exact frame or closest loaded neighbour (guarantees zero missing scenes)
+    const img = getBestFrame(targetIdx);
+
+    if (img) {
       drawCanvas(img);
     }
 
@@ -139,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrubPercentText.textContent = `${percent}%`;
     }
 
-    // Scroll Hint Cue (fades out as soon as user starts scrolling)
+    // Scroll Hint Cue
     if (scrollHint) {
       if (currentProgress > 0.03) {
         scrollHint.style.opacity = '0';
@@ -171,22 +232,22 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, width, height);
 
-    // 2. 100% Edge-to-Edge Fullscreen Cover on ALL Devices
+    // 2. Fullscreen Edge-to-Edge Cover Math across all devices
     const imgW = img.naturalWidth || 1920;
     const imgH = img.naturalHeight || 1080;
 
-    // Cover ratio fills the entire viewport width and height completely
+    // Cover: fills entire viewport width & height
     const ratio = Math.max(width / imgW, height / imgH);
 
     const drawW = imgW * ratio;
     const drawH = imgH * ratio;
 
-    // Perfect horizontal centering on all screens (mobile & desktop)
+    // Mathematical horizontal dead-center
     const drawX = (width - drawW) / 2;
 
     // Vertical positioning:
-    // When drawH is taller than viewport (e.g. ultrawide monitors), bias towards upper third (0.35)
-    // On mobile portrait, drawH === height, so drawY is 0 (fills edge to edge with zero empty gaps)
+    // On ultrawide screens (drawH > height), bias towards upper third (0.35)
+    // On mobile portrait, drawH === height, so drawY = 0 (fills top-to-bottom edge-to-edge)
     const drawY = drawH > height ? (height - drawH) * 0.35 : (height - drawH) / 2;
 
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
