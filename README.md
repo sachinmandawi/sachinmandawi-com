@@ -13,6 +13,8 @@ Official portfolio and visual showcase of **Sachin Mandawi** (`@sachinmandawi`) 
 ## 🔗 Official Live Links
 
 - 🌐 **Official Website:** [https://sachinmandawi.com](https://sachinmandawi.com)
+- 🎬 **Visual Story Experience:** [https://sachinmandawi.com/story.html](https://sachinmandawi.com/story.html)
 - 💻 **GitHub Profile:** [https://github.com/sachinmandawi](https://github.com/sachinmandawi)
+- 🐦 **X (Twitter):** [https://x.com/sachinmandawi](https://x.com/sachinmandawi)
 - 📷 **Instagram:** [https://www.instagram.com/sachinmandawi](https://www.instagram.com/sachinmandawi)
 - 📌 **Pinterest Showcase:** [https://in.pinterest.com/sachinmandawi/](https://in.pinterest.com/sachinmandawi/)
