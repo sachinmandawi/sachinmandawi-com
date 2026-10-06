@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090a">
+  
+  <title>The Story | Sachin Mandawi</title>
+  <meta name="description" content="Cinematic interactive scroll-driven story of Sachin Mandawi — Software & Android Developer.">
+  <meta name="author" content="Sachin Mandawi">
+  <link rel="canonical" href="https://sachinmandawi.com/story.html">
+  <link rel="icon" type="image/jpeg" href="images/sachin-mandawi.jpg">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Sachin Mandawi">
+  <meta property="og:title" content="The Story | Sachin Mandawi">
+  <meta property="og:description" content="Cinematic interactive scroll-driven story of Sachin Mandawi — Software & Android Developer.">
+  <meta property="og:url" content="https://sachinmandawi.com/story.html">
+  <meta property="og:image" content="https://sachinmandawi.com/images/sachin-mandawi.jpg">
+  <meta property="og:type" content="profile">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Story | Sachin Mandawi">
+  <meta name="twitter:description" content="Cinematic interactive scroll-driven story of Sachin Mandawi — Software & Android Developer.">
+  <meta name="twitter:image" content="https://sachinmandawi.com/images/sachin-mandawi.jpg">
+
+  <link rel="stylesheet" href="story.css">
+</head>
+
+<body>
+
+  <!-- Top Floating Header Bar (Transparent Overlay) -->
+  <header class="story-header">
+    <a href="index.html" class="btn-back" id="btnBackHome">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      </svg>
+      <span>Back</span>
+    </a>
+
+    <div class="story-brand">
+      <span class="brand-name">Sachin Mandawi</span>
+      <span class="verified-badge" title="Verified Profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path class="verified-seal" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z"/>
+          <path class="verified-check" d="M10.54 16.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/>
+        </svg>
+      </span>
+    </div>
+
+    <div class="header-right-actions">
+      <div class="story-progress-pill">
+        <span class="progress-dot"></span>
+        <span id="scrubPercentText" class="progress-text">0%</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Top Scrub Progress Indicator Line -->
+  <div class="top-progress-bar-wrap">
+    <div id="scrubProgressBar" class="top-progress-bar"></div>
+  </div>
+
+  <!-- Main Scroll Scrubbing Container (Apple Style Sticky Viewport) -->
+  <div id="scrubContainer" class="scrub-container">
+    <div class="scrub-sticky-frame">
+      
+      <!-- Canvas Frame Box (Apple-Style 60fps Image Sequence) -->
+      <div class="video-canvas-box">
+        <canvas id="scrubCanvas" class="scrub-canvas"></canvas>
+      </div>
+
+      <!-- Scroll Hint Cue -->
+      <div id="scrollHint" class="scroll-hint">
+        <span class="scroll-mouse-icon">
+          <span class="scroll-mouse-wheel"></span>
+        </span>
+        <span class="scroll-hint-label">Scroll down to scrub</span>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <!-- After-Scrub Story & Profile Bio Content -->
+  <main class="story-bio-section">
+    <div class="story-content-wrap">
+      
+      <!-- Introduction Card -->
+      <section class="bio-card">
+        <div class="bio-header">
+          <span class="bio-eyebrow">ABOUT ME</span>
+          <h2 class="bio-title">Driven by Performance &amp; Privacy</h2>
+        </div>
+        <p class="bio-text">
+          I am <strong>Sachin Mandawi</strong>, a Software &amp; Android Developer dedicated to engineering fast, privacy-respecting, and beautifully crafted digital tools. Whether exploring Android system APIs through Shizuku, building modern reactive UIs with Jetpack Compose, or deploying lightweight client-side web applications, I focus on clean architecture and seamless user experiences.
+        </p>
+      </section>
+
+      <!-- Tech Stack Badges -->
+      <section class="skills-card">
+        <span class="bio-eyebrow">CORE EXPERTISE</span>
+        <h3 class="skills-title">Technologies &amp; Frameworks</h3>
+        
+        <div class="skills-grid">
+          <div class="skill-pill">
+            <span class="skill-icon">🤖</span>
+            <span class="skill-name">Android SDK &amp; Jetpack</span>
+          </div>
+          <div class="skill-pill">
+            <span class="skill-icon">🎯</span>
+            <span class="skill-name">Kotlin &amp; Coroutines</span>
+          </div>
+          <div class="skill-pill">
+            <span class="skill-icon">⚡</span>
+            <span class="skill-name">Jetpack Compose</span>
+          </div>
+          <div class="skill-pill">
+            <span class="skill-icon">🔒</span>
+            <span class="skill-name">Shizuku &amp; System APIs</span>
+          </div>
+          <div class="skill-pill">
+            <span class="skill-icon">🌐</span>
+            <span class="skill-name">Modern JavaScript &amp; Web</span>
+          </div>
+          <div class="skill-pill">
+            <span class="skill-icon">🛡️</span>
+            <span class="skill-name">Privacy Architecture</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Projects -->
+      <section class="featured-card">
+        <span class="bio-eyebrow">FEATURED CREATIONS</span>
+        <h3 class="skills-title">What I've Built</h3>
+        
+        <div class="project-mini-list">
+          <!-- DocReducer -->
+          <div class="project-mini-item">
+            <div class="project-mini-icon">📄</div>
+            <div class="project-mini-info">
+              <h4>DocReducer <span class="badge-mini">Live</span></h4>
+              <p>High-speed, 100% private, client-side image compressor &amp; format converter.</p>
+            </div>
+            <a href="https://sachinmandawi.github.io/docreducer/" target="_blank" rel="noopener noreferrer" class="project-mini-link">Open ↗</a>
+          </div>
+
+          <!-- CleanBar -->
+          <div class="project-mini-item">
+            <div class="project-mini-icon">✨</div>
+            <div class="project-mini-info">
+              <h4>CleanBar</h4>
+              <p>Android status bar customizer for clean, distraction-free mobile screen aesthetics.</p>
+            </div>
+          </div>
+
+          <!-- PantherNote -->
+          <div class="project-mini-item">
+            <div class="project-mini-icon">📝</div>
+            <div class="project-mini-info">
+              <h4>PantherNote</h4>
+              <p>Minimalist, privacy-first offline note-taking app with encrypted local storage.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="story-actions">
+        <a href="index.html" class="btn-action-primary">
+          <span>Explore Photo Gallery &amp; Links</span>
+          <span class="arrow-icon">→</span>
+        </a>
+        <a href="https://github.com/sachinmandawi" target="_blank" rel="noopener noreferrer" class="btn-action-secondary">
+          <span>Visit GitHub Profile ↗</span>
+        </a>
+      </section>
+
+      <!-- Footer -->
+      <footer class="story-footer">
+        <p>&copy; 2026 Sachin Mandawi. All rights reserved.</p>
+      </footer>
+
+    </div>
+  </main>
+
+  <script src="story.js"></script>
+</body>
+</html>
